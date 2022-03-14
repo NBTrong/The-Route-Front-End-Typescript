@@ -1,4 +1,5 @@
-import UrlService from './UrlServices';
+import axios from 'axios';
+import UrlService from './UrlService';
 
 const getRoadmaps = async (
   username : string,
@@ -24,53 +25,34 @@ const getRoadmaps = async (
   };
   const url = UrlService.getUserUrl(username) + roadmapQuery(type);
   const token = localStorage.getItem('token');
-  try {
-    const response = await fetch(url, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Token ${token}`,
-      },
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    // console.log(error);
-    return { error };
-  }
+  return axios(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Token ${token}`,
+    },
+  });
 };
-
 const getRoadmap = async (slug : string) => {
   const url = UrlService.getRoadmapUrl(slug);
   const token = localStorage.getItem('token');
-  try {
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const roadmap = await response.json();
-    return roadmap;
-  } catch (error) {
-    // console.error(error);
-    return { error };
-  }
+  return axios(url, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 const fullRoadmap = async (slug : string) => {
   const url = `${UrlService.getRoadmapUrl(slug)}/full`;
   const token = localStorage.getItem('token');
-  try {
-    const response = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const roadmap = await response.json();
-    return roadmap;
-  } catch (error) {
-    // console.error(error);
-    return { error };
-  }
+  return axios(url, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 const updateRoadmap = async (
@@ -87,24 +69,17 @@ const updateRoadmap = async (
     name: options.name,
     description: options.description,
     current: options.current,
-    image: options.image,
+    // image: options.image,
   };
   const token = localStorage.getItem('token');
-  try {
-    const response = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
-    const roadmap = await response.json();
-    return roadmap;
-  } catch (error) {
-    // console.log('Not able to update the roadmap');
-    return { error };
-  }
+  return axios(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    data: JSON.stringify(data),
+  });
 };
 
 const addRoadmap = async (
@@ -121,109 +96,74 @@ const addRoadmap = async (
     image: options.image,
   };
   const token = localStorage.getItem('token');
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
-    const roadmap = await response.json();
-    return roadmap;
-  } catch (error) {
-    // console.log('Not able to add the roadmap');
-    return { error };
-  }
+  return axios(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    data: JSON.stringify(data),
+  });
 };
 
 const duplicateRoadmap = async (slug : string) => {
   const url = `${UrlService.getRoadmapUrl(slug)}/duplicate`;
   const token = localStorage.getItem('token');
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const roadmap = await response.json();
-    return roadmap;
-  } catch (error) {
-    // console.log('Not able to duplicate the roadmap');
-    return { error };
-  }
+  return axios(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 const likeRoadmap = async (slug : string) => {
   const url = `${UrlService.getRoadmapUrl(slug)}/like`;
   const token = localStorage.getItem('token');
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const roadmap = await response.json();
-    return roadmap;
-  } catch (error) {
-    // console.log('Not able to like the roadmap');
-    return { error };
-  }
+  return axios(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 const unlikeRoadmap = async (slug : string) => {
   const url = `${UrlService.getRoadmapUrl(slug)}/unlike`;
   const token = localStorage.getItem('token');
-  try {
-    const response = await fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const roadmap = await response.json();
-    return roadmap;
-  } catch (error) {
-    // console.log('Not able to unlike the roadmap');
-    return { error };
-  }
+  return axios(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 const progress = async () => {
   const apiDomain = UrlService.getApiDomain();
   const token = localStorage.getItem('token');
-  return fetch(`${apiDomain}/api/progress`, {
+  return axios(`${apiDomain}/api/progress`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-  }).then((response) => response.json());
+  });
 };
 
 const deleteRoadmap = async (slug : string) => {
   const url = UrlService.getRoadmapUrl(slug);
   const token = localStorage.getItem('token');
-  try {
-    const response = await fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const roadmap = await response.json();
-    return roadmap;
-  } catch (error) {
-    // console.log('Not able to delete the roadmap');
-    return { error };
-  }
+  return axios(url, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
 };
 
 export default {

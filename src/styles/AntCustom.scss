@@ -1,0 +1,8 @@
+.ant-picker-footer-extra{
+    text-align: right !important;
+    line-height: 45px !important;
+}
+
+.ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner, .ant-picker-cell-in-view.ant-picker-cell-range-start .ant-picker-cell-inner, .ant-picker-cell-in-view.ant-picker-cell-range-end .ant-picker-cell-inner {
+    background: var(--green) !important;
+}

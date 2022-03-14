@@ -11,21 +11,21 @@ const getHomePageUrl = (path:string) => `${getApiDomain()}/api/${path}`;
 
 const getUserUrl = (username:string) => `${getApiDomain()}/api/users/${username}`;
 
-const getRoadmapUrl = (slug = null) => {
+const getRoadmapUrl = (slug:string | null = null) => {
   if (slug) {
     return `${getApiDomain()}/api/roadmaps/${slug}`;
   }
   return `${getApiDomain()}/api/roadmaps`;
 };
 
-const getMilestoneUrl = (id = null) => {
+const getMilestoneUrl = (id: string | null = null) => {
   if (id) {
     return `${getApiDomain()}/api/milestones/${id}`;
   }
   return `${getApiDomain()}/api/milestones`;
 };
 
-const getTaskUrl = (id = null) => {
+const getTaskUrl = (id: string | null = null) => {
   if (id) {
     return `${getApiDomain()}/api/tasks/${id}`;
   }

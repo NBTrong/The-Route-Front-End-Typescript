@@ -1,25 +1,34 @@
+// Hook
 import React, { useState, useEffect } from 'react';
-// import {
-//   BrowserRouter,
-//   Routes,
-//   Route,
-// } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from 'react-router-dom';
+
+// Components
 import { message } from 'antd';
-import Auth from './pages/authentication/Auth';
+import Layout from './components/Layout';
+
+// Pages
+import Auth from './pages/AuthPage';
+import RoadmapPage from './pages/RoadmapPage';
+
+// Services
 import AuthApi from './services/AuthApi';
-import './App.css';
+
+// Styles
+import './styles/index.scss';
 
 function App() {
-  const [token, setToken] = useState<string | null>();
-  const [, setUser] = useState({});
-
+  const [token, setToken] = useState<string | null>('');
   const error = (mess: string) => {
     setTimeout(() => {
       message.error(mess);
     }, 500);
   };
 
-  const signIn = async (e:any, UserName:string, Password:string) => {
+  const signUp = async (e:any, UserName:string, Password:string) => {
     e.preventDefault();
     const data = { name: UserName, password: Password };
     try {
@@ -28,7 +37,6 @@ function App() {
         const accessToken = response.token.original.access_token;
         localStorage.setItem('token', accessToken);
         setToken(accessToken);
-        setUser(response.user);
       } else {
         error('Sign up failed. Please try again.');
       }
@@ -37,7 +45,7 @@ function App() {
     }
   };
 
-  const signUp = async (e:any, UserName:string, Password:string) => {
+  const signIn = async (e:any, UserName:string, Password:string) => {
     e.preventDefault();
     const data = { name: UserName, password: Password };
     try {
@@ -46,7 +54,6 @@ function App() {
         const accessToken = response.token.original.access_token;
         localStorage.setItem('token', accessToken);
         setToken(accessToken);
-        setUser(response.user);
       } else {
         error('Wrong name or password. Please try again.');
       }
@@ -55,39 +62,17 @@ function App() {
     }
   };
 
-  // const signOut = async () => {
-  //   try {
-  //     const response = await AuthApi.signOut(token);
-  //     if (response.message) {
-  //       localStorage.setItem('token', '');
-  //       setToken('');
-  //     }
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // };
-
-  // const getUser = async () => {
-  //   try {
-  //     const response = await AuthApi.getUser(token);
-  //     if (response.error == false) {
-  //       setUser(response.user);
-  //     }
-  //   } catch (e) {
-
-  //   }
-  // };
-
-  // const updateUser = async (data) => {
-  //   try {
-  //     const response = await AuthApi.updateUser(token, data);
-  //     if (response.error == false) {
-  //       setUser(response.user);
-  //     }
-  //   } catch (e) {
-
-  //   }
-  // };
+  const signOut = async () => {
+    try {
+      const response = await AuthApi.signOut(token);
+      if (response.message) {
+        localStorage.setItem('token', '');
+        setToken('');
+      }
+    } catch (e) {
+      // TODO
+    }
+  };
 
   useEffect(() => {
     setToken(localStorage.getItem('token'));
@@ -101,8 +86,74 @@ function App() {
       />
     );
   }
+
   return (
-    <div className="App">Batrong</div>
+    <div className="App">
+      <BrowserRouter>
+        <Layout
+          signOut={signOut}
+        >
+          <Routes>
+            {/* <Route
+              path="/"
+              element={(
+                <HomePage
+                  signOut={signOut}
+                  user={user}
+                  getUser={getUser}
+                  updateUser={updateUser}
+                />
+            )}
+            /> */}
+            <Route
+              path="/roadmap/:slug"
+              element={(
+                <RoadmapPage />
+              )}
+            />
+            {/* <Route
+              path="/test"
+              element={
+                <Test signOut={signOut} />
+            }
+            />
+            <Route
+              path="/collection/:username"
+              element={(
+                <CollectionPage
+                  signOut={signOut}
+                  user={user}
+                  getUser={getUser}
+                  updateUser={updateUser}
+                  type="mine"
+                />
+            )}
+            />
+            <Route
+              path="/collection/:username/liked"
+              element={(
+                <CollectionPage
+                  signOut={signOut}
+                  user={user}
+                  getUser={getUser}
+                  updateUser={updateUser}
+                  type="liked"
+                />
+            )}
+            />
+            <Route
+              path="/collection/:username/followed"
+              element={(
+                <CollectionPage
+                  signOut={signOut}
+                  type="followed"
+                />
+            )}
+            /> */}
+          </Routes>
+        </Layout>
+      </BrowserRouter>
+    </div>
   );
 }
 
