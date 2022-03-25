@@ -1,0 +1,70 @@
+.roadmap-cards{
+    justify-content: start !important;
+    .ant-scroll-number {
+        left: 3px!important;
+    }
+}
+
+.roadmap-card-extra-item {
+    display: flex;
+}
+
+.roadmap-card-title {
+    padding-left: 0!important;
+    padding-top: 0!important;
+}
+
+.avatar-cover {    
+    border         : 2px dashed rgba(0, 0, 0, 0.1);
+    border-radius  : 4px;
+    position: relative;
+    display: grid;
+
+    .avatar-upload-title {
+        text-align: center;
+        cursor    : pointer;
+        font-size : 14px;
+        padding   : 76px 0;
+        color     : #6B7280;
+        grid-row: 1;
+        grid-column: 1;
+        .avatar_upload-button {
+            font-size    : 36px;
+            color        : #6B7280;
+            opacity      : 0.2;
+            margin-bottom: 8px;
+            color      : var(--green-color);
+            font-weight: 600;
+            z-index: 99;
+        }
+    }
+
+    .avatar-upload-img {
+        grid-row: 1;
+        grid-column: 1;
+    }
+
+    .avatar-upload-input {
+        //visibility: hidden;
+        display: none;
+        z-index: 0;
+    }
+}
+
+.avatar-cover:active {
+    border: 2px dashed #009f7f;
+}
+
+.avatar-cover:hover {
+    border: 2px dashed #009f7f;
+}
+
+.roadmap-card {
+    box-shadow: var(--box-shadow);
+    margin-bottom: 20px;
+}
+
+.HeartFilled{
+    opacity: 1;
+    color: red;
+}
