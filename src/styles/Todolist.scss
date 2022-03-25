@@ -1,0 +1,59 @@
+.details{
+  .ant-input[disabled] {
+    background-color: white !important;
+    color: black;
+  }
+}
+.todo-item{
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+      .actives {
+        opacity: 0.3;
+        text-decoration: line-through;
+      }
+      .inputTask{
+        width: 70%;
+        font-size: 1.1rem;
+        display: block;
+        margin-right: 1rem;
+        background-color: white;
+      }
+      .check {
+        width: 1.5rem;
+        margin-right: 1rem;
+        opacity: 0.5;
+        cursor: pointer;
+      }
+      .check:hover{
+          opacity: 1;
+      }
+      .trash {
+        width: 1.2rem;
+        opacity: 0.3;
+      }
+      .trash:hover {
+        opacity: 1;
+        cursor: pointer;
+      }
+}
+
+.list-footer{
+    .list-footer-add-box{
+        display: flex;
+        .list-footer-input{
+          width: 95%;
+          font-size: 1rem;
+          margin-left: .8rem;
+          display: block;
+          background-color: white;
+        }
+        .list-footer-add-btn{
+            background-color: white;
+            opacity: 0.5;
+        }
+        .list-footer-add-btn:hover{
+            opacity: 1;
+        }
+    }
+}

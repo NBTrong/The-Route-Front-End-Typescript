@@ -1,0 +1,16 @@
+.time{
+    margin-bottom: .5rem;
+    margin-top: .5rem;
+    .ant-row{
+        justify-content: left !important;
+    }
+    .blog-slider__code {
+        color: #7b7992;
+        // margin-right: 1rem;
+        display: inline-block;
+    }
+    .date-selector-select {
+        display: inline-block;
+        font-size: x-small;
+    }
+}

@@ -2,7 +2,6 @@ import React, {
   useEffect, useState, useRef, useCallback,
 } from 'react';
 // import { Loading } from '../../components/Loading';
-import './style.scss';
 import { message } from 'antd';
 import img_a from './img/log.svg';
 import img_b from './img/register.svg';
@@ -20,11 +19,6 @@ function Auth({ signUp, signIn }:TypeProps) {
   const [formErrors, setFormErrors] = useState('');
   const notInitialRender = useRef(false);
 
-  // const success = (mess: string) => {
-  //   setTimeout(() => {
-  //     message.success(mess);
-  //   }, 500);
-  // };
   const warning = (mess: string) => {
     setTimeout(() => {
       message.warning(mess);
@@ -76,7 +70,6 @@ function Auth({ signUp, signIn }:TypeProps) {
     if (signInBtn === null || signUpBtn === null || container === null) return;
     signUpBtn.addEventListener('click', () => {
       container.classList.add('sign-up-mode');
-
       signInBtn.addEventListener('click', () => {
         container.classList.remove('sign-up-mode');
       });
@@ -88,11 +81,8 @@ function Auth({ signUp, signIn }:TypeProps) {
   }, [username, password, validateSignInFields]);
 
   useEffect(() => {
-    // Check if container's class is sign-up-mode
-    // console.log('hi');
     const container = document.querySelector('.container');
     if (container && container.classList.contains('sign-up-mode')) {
-      // console.log('hello')
       validateSignUpFields();
     }
   }, [username, password, confirm, validateSignUpFields]);

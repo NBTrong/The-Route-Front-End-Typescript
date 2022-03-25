@@ -17,7 +17,7 @@ const loginUser = async (data:any) => fetch(`${apiDomain}/api/login`, {
   body: JSON.stringify(data),
 }).then((response) => response.json());
 
-const getUser = async (token:string) => fetch(`${apiDomain}/api/getUser`, {
+const getUser = async (token:string | null) => fetch(`${apiDomain}/api/getUser`, {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ const getUser = async (token:string) => fetch(`${apiDomain}/api/getUser`, {
   },
 }).then((response) => response.json());
 
-const updateUser = async (token:string, data = {}) => fetch(`${apiDomain}/api/updateUser`, {
+const updateUser = async (token:string | null, data = {}) => fetch(`${apiDomain}/api/updateUser`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ const updateUser = async (token:string, data = {}) => fetch(`${apiDomain}/api/up
   body: JSON.stringify(data),
 }).then((response) => response.json());
 
-const signOut = async (token:string) => fetch(`${apiDomain}/api/logout`, {
+const signOut = async (token:string | null) => fetch(`${apiDomain}/api/logout`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',

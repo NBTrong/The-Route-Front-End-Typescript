@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url(./AuthPage.scss);
+@import url(./HomePage.scss);
+@import url(./RoadmapPage.scss);
+@import url(./Portfolio.scss);
+@import url(./DateSelector.scss);
+@import url(./Todolist.scss);
+@import url(./AntCustom.scss);
+@import url('./MilestoneList.scss');
+@import url('./Milestone.scss');
+@import 'antd/dist/antd.css';
+
+:root{
+    --green:#27ae60;
+    --black:#192a56;
+    --light-color:#666;
+    --box-shadow:0 .1rem 0.1rem rgba(0,0,0,.1);
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    background-color: #F5F5F5;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 15px;
+    background-color: #888;
+}
+::-webkit-scrollbar-track {
+    background-color: #F5F5F5;
+}
+
+*{
+    margin:0; padding:0;
+    box-sizing: border-box;
+    text-decoration: none;
+    outline: none; border:none;
+    transition: all .2s linear;
+}
+
+html{
+    overflow-x: hidden;
+    scroll-padding-top: 5.5rem;
+    scroll-behavior: smooth;
+}
