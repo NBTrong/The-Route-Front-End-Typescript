@@ -1,10 +1,13 @@
+/* Hooks */
 import React, { useState, useEffect } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
+
+/* Components */
 import Alert from '../../components/atoms/Alert';
-import RoadmapService from '../../services/RoadmapService';
 import RoadmapContainer from '../../components/molecules/RoadmapContainer';
-// import { Header } from '../../components/Header';
-// import { Loading } from '../../components/Loading';
+
+/* Services */
+import RoadmapService from '../../services/RoadmapService';
 
 function CollectionPage() {
   const { username } = useParams();
@@ -34,7 +37,7 @@ function CollectionPage() {
           return 0;
         });
         setData(newData);
-        setSameUser(res.sameUser);
+        setSameUser(res.data.sameUser);
       })
       .catch((err) => {
         Alert.error(err);
@@ -46,7 +49,7 @@ function CollectionPage() {
       .then((res) => {
         const newData = data.map((roadmap : any) => {
           if (roadmap.slug === slug) {
-            const newRoadmap = res.roadmap;
+            const newRoadmap = res.data.roadmap;
             newRoadmap.status = 'normal';
             return newRoadmap;
           }
@@ -75,7 +78,7 @@ function CollectionPage() {
   const onCreate = (options : any) => {
     RoadmapService.addRoadmap(options)
       .then((res) => {
-        const newRoadmap = res.roadmap;
+        const newRoadmap = res.data.roadmap;
         newRoadmap.status = 'normal';
         const newData = [...data, newRoadmap];
         // Sort by updatedAt
@@ -107,7 +110,7 @@ function CollectionPage() {
       .then((res) => {
         const newData = data.filter((roadmap : any) => roadmap.slug !== slug);
         setData(newData);
-        Alert.success(res.message);
+        Alert.success(res.data.message);
       })
       .catch((err) => {
         Alert.error(err);
@@ -127,15 +130,6 @@ function CollectionPage() {
 
   return (
     <div className="CollectionPage">
-      {/* <Header
-        signOut={props.signOut}
-        key={50}
-        key_props={50 + 1}
-        signOut={props.signOut}
-        user={props.user}
-        getUser={props.getUser}
-        updateUser={props.updateUser}
-      /> */}
       <div className="CollectionPage__container">
         <RoadmapContainer
           data={data}
@@ -146,7 +140,6 @@ function CollectionPage() {
           isAddable={sameUser}
         />
       </div>
-      {/* <Loading /> */}
     </div>
   );
 }

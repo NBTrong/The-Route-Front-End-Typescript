@@ -12,7 +12,9 @@ import Layout from './components/Layout';
 
 // Pages
 import Auth from './pages/AuthPage';
+import HomePage from './pages/HomePage';
 import RoadmapPage from './pages/RoadmapPage';
+import CollectionPage from './pages/CollectionPage';
 
 // Services
 import AuthApi from './services/AuthApi';
@@ -94,62 +96,36 @@ function App() {
           signOut={signOut}
         >
           <Routes>
-            {/* <Route
+            <Route
               path="/"
               element={(
-                <HomePage
-                  signOut={signOut}
-                  user={user}
-                  getUser={getUser}
-                  updateUser={updateUser}
-                />
+                <HomePage />
             )}
-            /> */}
+            />
             <Route
               path="/roadmap/:slug"
               element={(
                 <RoadmapPage />
               )}
             />
-            {/* <Route
-              path="/test"
-              element={
-                <Test signOut={signOut} />
-            }
-            />
             <Route
               path="/collection/:username"
               element={(
-                <CollectionPage
-                  signOut={signOut}
-                  user={user}
-                  getUser={getUser}
-                  updateUser={updateUser}
-                  type="mine"
-                />
+                <CollectionPage />
             )}
             />
             <Route
               path="/collection/:username/liked"
               element={(
-                <CollectionPage
-                  signOut={signOut}
-                  user={user}
-                  getUser={getUser}
-                  updateUser={updateUser}
-                  type="liked"
-                />
+                <CollectionPage />
             )}
             />
             <Route
               path="/collection/:username/followed"
               element={(
-                <CollectionPage
-                  signOut={signOut}
-                  type="followed"
-                />
+                <CollectionPage />
             )}
-            /> */}
+            />
           </Routes>
         </Layout>
       </BrowserRouter>
