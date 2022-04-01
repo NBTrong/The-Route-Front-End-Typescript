@@ -38,9 +38,6 @@ function Milestone({
 }: PropsType) {
   const { roadmap, dispatchRoadmap, setCurrentMilestoneID } = useContext(RoadmapContext);
   const [inputValues, setInputValues] = useState<Input>({} as Input);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [type, setType] = useState<'date' | 'month' | 'year'>('date');
   const [count, setCount] = useState(0);
   const [colorStatus, setColorStatus] = useState('');
   const [sum, setSum] = useState(0);
@@ -72,9 +69,6 @@ function Milestone({
   };
 
   const handleChangeDate = (sd: Date, ed: Date, t: 'date' | 'month' | 'year') => {
-    setStartDate(sd);
-    setEndDate(ed);
-    setType(t);
     const options = {
       startDate: sd,
       endDate: ed,
@@ -108,7 +102,7 @@ function Milestone({
   useEffect(() => {
     let Count = 0;
     milestone.tasks.forEach((task) => {
-      if (task.completed === 1) {
+      if (task.completed === true) {
         Count += 1;
       }
     });
@@ -199,12 +193,12 @@ function Milestone({
               </div>
               <DateSelector
                 id={milestoneID}
-                startDate={startDate}
-                endDate={endDate}
-                type={type}
+                startDate={new Date(milestone.startDate)}
+                endDate={new Date(milestone.endDate)}
+                type={milestone.type}
+                hasType
                 isEditable={roadmap.isRoadmapOwner}
                 changeDate={handleChangeDate}
-                hasType
               />
               <div className="tag">
                 <span style={{ color: 'black' }}>Status: </span>

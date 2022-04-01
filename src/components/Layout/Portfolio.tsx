@@ -197,7 +197,7 @@ function Portfolio({
               const num = (skill.current / skill.totalMilestone) * 100;
               let length = num;
               if (num < 12.8) {
-                length = num + 12.8;
+                length = num + 14;
               }
               return (
                 <div key={skill.id}>

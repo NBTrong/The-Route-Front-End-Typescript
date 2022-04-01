@@ -75,11 +75,11 @@ const handleResponseRoadmap = (param: any) => {
 const likeRoadmap = async (roadmap: Roadmap): Promise<Roadmap> => {
   const { slug } = roadmap;
   try {
-    await RoadmapServices.likeRoadmap(slug);
+    const response = await RoadmapServices.likeRoadmap(slug);
     const newRoadmap: Roadmap = {
       ...roadmap,
       liked: true,
-      likeCount: roadmap.likeCount + 1,
+      likeCount: response.data.likes_count,
     };
     return newRoadmap;
   } catch {
@@ -90,11 +90,11 @@ const likeRoadmap = async (roadmap: Roadmap): Promise<Roadmap> => {
 const unlikeRoadmap = async (roadmap: Roadmap): Promise<Roadmap> => {
   const { slug } = roadmap;
   try {
-    await RoadmapServices.unlikeRoadmap(slug);
+    const response = await RoadmapServices.unlikeRoadmap(slug);
     const newRoadmap: Roadmap = {
       ...roadmap,
       liked: false,
-      likeCount: roadmap.likeCount - 1,
+      likeCount: response.data.likes_count,
     };
     return newRoadmap;
   } catch {
@@ -132,7 +132,9 @@ const addMilestone = async (roadmap: Roadmap, options: any) => {
       const newMilestone = handleResponseMilestone(response.data.milestone);
       const newRoadmap = cloneDeep(roadmap);
       newRoadmap.milestones.push(newMilestone);
-      newRoadmap.milestones.sort((a : Milestone, b : Milestone) => +a.startDate - +b.startDate);
+      newRoadmap.milestones.sort(
+        (a : Milestone, b : Milestone) => +new Date(a.startDate) - +new Date(b.startDate),
+      );
       return newRoadmap;
     }
     return roadmap;
@@ -152,15 +154,9 @@ const updateMilestone = async (roadmap: Roadmap, id: string, options: any) => {
         ...newMilestone,
         tasks: newRoadmap.milestones[index].tasks,
       };
-      newRoadmap.milestones.sort((a : any, b : any) => {
-        if (a.start_date < b.start_date) {
-          return -1;
-        }
-        if (a.start_date > b.start_date) {
-          return 1;
-        }
-        return 0;
-      });
+      newRoadmap.milestones.sort(
+        (a : Milestone, b : Milestone) => +new Date(a.startDate) - +new Date(b.startDate),
+      );
       return newRoadmap;
     }
     return roadmap;

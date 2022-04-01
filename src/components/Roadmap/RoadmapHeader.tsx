@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 /* Hooks */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 /* Components */
 import {
@@ -29,6 +29,7 @@ interface PropsType {
   avatar: string,
   authorUserName: string,
   likesCount: number,
+  sameUser: boolean,
 }
 
 function RoadmapHeader({
@@ -41,23 +42,24 @@ function RoadmapHeader({
   avatar,
   authorUserName,
   likesCount,
+  sameUser,
 }: PropsType) {
   const [hearted, setHearted] = useState(liked);
+  const [likesCountState, setLikesCountState] = useState(likesCount);
   const paragraphs = description.split('\n');
 
   // HANDLE FUNCTIONS
   const handleClickHeart = () => {
     if (hearted === true) {
       unlike();
-      return setHearted(false);
+      setLikesCountState(likesCountState - 1);
+      setHearted(false);
+      return;
     }
     like();
-    return setHearted(true);
+    setLikesCountState(likesCountState + 1);
+    setHearted(true);
   };
-
-  useEffect(() => {
-    setHearted(liked);
-  }, [liked]);
 
   // RETURN
   const content = (
@@ -71,7 +73,7 @@ function RoadmapHeader({
         </Typography>
       </div>
       <div className="reaction">
-        <Badge count={likesCount} size="small" offset={[3, 0]}>
+        <Badge count={likesCountState} size="small" offset={[3, 0]}>
           {hearted === true
             ? (
               <HeartFilled
@@ -108,7 +110,7 @@ function RoadmapHeader({
           onClick={() => { duplicate(); }}
           className="add-button"
         >
-          Add
+          {sameUser ? 'Duplicate' : 'Add'}
         </Button>,
       ]}
       avatar={{ src: `${apiDomain}/images/${avatar}` }}

@@ -73,6 +73,7 @@ function RoadmapPage() {
                 like={() => dispatchRoadmap({ type: 'likeRoadmap' })}
                 unlike={() => dispatchRoadmap({ type: 'unlikeRoadmap' })}
                 duplicate={() => duplicateRoadmap()}
+                sameUser={roadmap.isRoadmapOwner}
               />
             )}
             className="roadmap-main roadmap-main-full"
