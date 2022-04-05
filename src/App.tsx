@@ -115,13 +115,7 @@ function App() {
             )}
             />
             <Route
-              path="/collection/:username/liked"
-              element={(
-                <CollectionPage />
-            )}
-            />
-            <Route
-              path="/collection/:username/followed"
+              path="/collection/:username/:type"
               element={(
                 <CollectionPage />
             )}

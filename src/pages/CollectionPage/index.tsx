@@ -1,10 +1,10 @@
 /* Hooks */
 import React, { useState, useEffect } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 /* Components */
 import Alert from '../../components/atoms/Alert';
-import RoadmapContainer from '../../components/molecules/RoadmapContainer';
+import RoadmapContainer from '../../components/RoadmapContainer';
 
 /* Services */
 import RoadmapService from '../../services/RoadmapService';
@@ -12,32 +12,19 @@ import RoadmapService from '../../services/RoadmapService';
 function CollectionPage() {
   const { username } = useParams();
   const { type } = useParams();
-  const [redirect, setRedirect] = useState({
-    willRedirect: false,
-    pathname: '/',
-  });
   const initialData : any[] = [];
   const [data, setData] = useState(initialData);
   const [sameUser, setSameUser] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     RoadmapService.getRoadmaps(username || '', type || 'mine')
       .then((res) => {
-        const newData = res.data;
+        const newData : any[] = res.data.data;
         // Sort by updated_at
-        newData.sort((a : any, b : any) => {
-          const aDate : Date = new Date(a.updated_at);
-          const bDate : Date = new Date(b.updated_at);
-          if (aDate > bDate) {
-            return -1;
-          }
-          if (aDate < bDate) {
-            return 1;
-          }
-          return 0;
-        });
+        newData.sort((a : any, b : any) => +new Date(b.updated_at) - +new Date(a.updated_at));
         setData(newData);
-        setSameUser(res.data.sameUser);
+        setSameUser(res.data.same_user);
       })
       .catch((err) => {
         Alert.error(err);
@@ -56,17 +43,7 @@ function CollectionPage() {
           return roadmap;
         });
         // Resort the roadmaps by updated_at
-        newData.sort((a : any, b : any) => {
-          const aDate : Date = new Date(a.updated_at);
-          const bDate : Date = new Date(b.updated_at);
-          if (aDate > bDate) {
-            return -1;
-          }
-          if (aDate < bDate) {
-            return 1;
-          }
-          return 0;
-        });
+        newData.sort((a : any, b : any) => +new Date(b.updated_at) - +new Date(a.updated_at));
         setData(newData);
         Alert.success('Roadmap updated successfully');
       })
@@ -82,22 +59,9 @@ function CollectionPage() {
         newRoadmap.status = 'normal';
         const newData = [...data, newRoadmap];
         // Sort by updatedAt
-        newData.sort((a : any, b : any) => {
-          const aDate : Date = new Date(a.updated_at);
-          const bDate : Date = new Date(b.updated_at);
-          if (aDate > bDate) {
-            return -1;
-          }
-          if (aDate < bDate) {
-            return 1;
-          }
-          return 0;
-        });
+        newData.sort((a : any, b : any) => +new Date(b.updated_at) - +new Date(a.updated_at));
         setData(newData);
-        setRedirect({
-          willRedirect: true,
-          pathname: `/roadmaps/${newRoadmap.slug}`,
-        });
+        navigate(`/roadmap/${newRoadmap.slug}`);
         Alert.success('Roadmap created successfully');
       })
       .catch((err) => {
@@ -118,15 +82,8 @@ function CollectionPage() {
   };
 
   const onOpen = (slug : string) => {
-    setRedirect({
-      willRedirect: true,
-      pathname: `/roadmaps/${slug}`,
-    });
+    navigate(`/roadmap/${slug}`);
   };
-
-  if (redirect.willRedirect) {
-    return <Navigate to={redirect.pathname} />;
-  }
 
   return (
     <div className="CollectionPage">

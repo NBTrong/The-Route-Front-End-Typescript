@@ -12,7 +12,7 @@ import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import {
   List, Menu, Dropdown, Modal, Input,
 } from 'antd';
-// import DateSelector from '../DateSelector';
+import DateSelector from '../DateSelector';
 import checkdone from './icon/checked.svg';
 import checkNoteDone from './icon/check-mark.svg';
 
@@ -28,13 +28,13 @@ function TodoItem({ task, showModal }: { task: Task, showModal: Function }) {
   const [className, setClassName] = useState('');
   const [url, setUrl] = useState(checkNoteDone);
   const [content, setContent] = useState(task.content);
-  const [completed, setCompleted] = useState(0);
+  const [completed, setCompleted] = useState(false);
 
   // HANDLE FUNCTIONS
   const handleOnComplete = () => {
-    let Completed = 0;
-    if (task.completed === 0) {
-      Completed = 1;
+    let Completed = false;
+    if (task.completed === false) {
+      Completed = true;
     }
     setCompleted(Completed);
     const options = {
@@ -77,7 +77,7 @@ function TodoItem({ task, showModal }: { task: Task, showModal: Function }) {
     <Menu>
       <Menu.Item
         style={{ width: '7rem' }}
-        onClick={() => showModal()}
+        onClick={() => showModal(task.id)}
       >
         Detail
       </Menu.Item>
@@ -184,15 +184,20 @@ function TodoList({ currentMilestone }: { currentMilestone: Milestone }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   // HANDLE FUNCTIONS
-  const showModal = () => {
+  const showModal = (id : string) => {
+    setCurrentTask(currentMilestone.tasks.find((task) => task.id === id) as Task);
     setIsModalVisible(true);
   };
 
   const handleOk = () => {
-    const options = {
-      note: currentTask.note,
-    };
-    dispatchRoadmap({ type: 'updateTask', id: currentTask.id, options });
+    if (isRoadmapOwner) {
+      const options = {
+        startDate: currentTask.startDate,
+        endDate: currentTask.endDate,
+        note: currentTask.note,
+      };
+      dispatchRoadmap({ type: 'updateTask', id: currentTask.id, options });
+    }
     setIsModalVisible(false);
   };
 
@@ -205,13 +210,13 @@ function TodoList({ currentMilestone }: { currentMilestone: Milestone }) {
     return setCurrentTask(CurrentTask);
   };
 
-  //   function changeDate(startDate, endDate) {
-  //     setCurrentTask({
-  //       ...currentTask,
-  //       startDate,
-  //       endDate,
-  //     });
-  //   }
+  const changeDate = (startDate: Date, endDate: Date) => {
+    setCurrentTask({
+      ...currentTask,
+      startDate: new Date(startDate).toISOString().slice(0, 10),
+      endDate: new Date(endDate).toISOString().slice(0, 10),
+    });
+  };
 
   const handleOnChangeNote = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCurrentTask({
@@ -232,7 +237,7 @@ function TodoList({ currentMilestone }: { currentMilestone: Milestone }) {
       <List
         className="todo-list"
         header={<div>Todo List</div>}
-        footer={isRoadmapOwner ? <TodoFooter /> : <>Footer</>}
+        footer={isRoadmapOwner ? <TodoFooter /> : <> </>}
         size="large"
         bordered
         dataSource={list}
@@ -249,14 +254,15 @@ function TodoList({ currentMilestone }: { currentMilestone: Milestone }) {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        {/* <DateSelector
+        <DateSelector
           id={currentTask.id}
-          startDate={currentTask.startDate}
-          endDate={currentTask.endDate}
+          startDate={new Date(currentTask.startDate)}
+          endDate={new Date(currentTask.endDate)}
           changeDate={changeDate}
           hasType={false}
-          isEditable={props.isEditable}
-        /> */}
+          type="date"
+          isEditable={isRoadmapOwner}
+        />
         <TextArea
           rows={10}
           className="textArea"

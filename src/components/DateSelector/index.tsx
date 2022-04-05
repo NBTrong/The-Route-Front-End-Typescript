@@ -1,22 +1,15 @@
 /* Hook */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 /* Component */
 import DatePicker from 'antd/es/date-picker';
 import moment from 'moment';
 import { Select, Button } from 'antd';
+import { CloseCircleFilled } from '@ant-design/icons';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-// DateSelector's props
-// @param {number} id - id of the date selector
-// @param {string} startDate - start date of the date selector
-// @param {string} endDate - end date of the date selector
-// @param {Function} changeDate - function to change the date
-// @param {string} type - type of the date selector, either day, month or year
-// @param {boolean} hasType - whether the date selector's type is editable
-// @param {boolean} isEditable - whether the date selector is editable or not
 interface PropsType {
   id: string,
   startDate: Date,
@@ -49,33 +42,48 @@ function DateSelector({
     }
   }
 
-  const [dateFormat, setDateFormat] = useState(getDateFormat(type));
+  const [start, setStart] = useState(new Date());
+  const [end, setEnd] = useState(new Date());
+  const [typeSelect, setTypeSelect] = useState('date' as 'date' | 'month' | 'year');
+  const [dateFormat, setDateFormat] = useState('YYYY-MM-DD');
+  const [popUpIsOpen, setPopUpIsOpen] = useState(false);
 
-  function handleDateChange(value: any) {
+  const handleDateChange = (value: any) => {
     if (value && value[0] && value[1]) {
       // eslint-disable-next-line no-underscore-dangle
       const sd = `${value[0]._d.getFullYear()}-${value[0]._d.getMonth() + 1}-${value[0]._d.getDate()}`;
       // eslint-disable-next-line no-underscore-dangle
       const ed = `${value[1]._d.getFullYear()}-${value[1]._d.getMonth() + 1}-${value[1]._d.getDate()}`;
-      if (hasType) {
-        changeDate(
-          new Date(sd).toISOString().slice(0, 10),
-          new Date(ed).toISOString().slice(0, 10),
-          type,
-        );
-      } else {
-        changeDate(
-          new Date(sd).toISOString().slice(0, 10),
-          new Date(ed).toISOString().slice(0, 10),
-        );
-      }
+      setStart(new Date(sd));
+      setEnd(new Date(ed));
     }
-  }
+  };
+
+  const handleSubmit = () => {
+    changeDate(start.toISOString().slice(0, 10), end.toISOString().slice(0, 10), typeSelect);
+    setPopUpIsOpen(false);
+  };
 
   const handleTypeChange = (e : any) => {
+    setTypeSelect(e);
     setDateFormat(getDateFormat(e));
-    changeDate(startDate, endDate, e);
+    setPopUpIsOpen(true);
   };
+
+  const handleCancel = () => {
+    setStart(startDate);
+    setEnd(endDate);
+    setTypeSelect(type);
+    setDateFormat(getDateFormat(type));
+    setPopUpIsOpen(false);
+  };
+
+  useEffect(() => {
+    setStart(startDate);
+    setEnd(endDate);
+    setTypeSelect(type);
+    setDateFormat(getDateFormat(type));
+  }, [startDate, endDate, type]);
 
   return (
     <div className="time">
@@ -83,31 +91,41 @@ function DateSelector({
         <span style={{ color: 'black', lineHeight: '32px' }}>Time:</span>
         <RangePicker
           key={id}
-          defaultValue={[moment(startDate, dateFormat), moment(endDate, dateFormat)]}
+          value={[moment(startDate), moment(endDate)]}
+          // eslint-disable-next-line react/jsx-boolean-value
+          open={popUpIsOpen}
           bordered={false}
           disabled={!isEditable}
           style={{ marginLeft: 46 }}
-          onCalendarChange={(value) => handleDateChange(value)}
+          onCalendarChange={handleDateChange}
           format={dateFormat}
-          picker={type}
-          onOk={(value) => console.log(value)}
+          picker={typeSelect}
+          onClick={() => setPopUpIsOpen(true)}
           allowClear
           renderExtraFooter={() => (
             <>
-              {isEditable
-                && hasType
-                && (
-                  <Select
-                    value={type}
-                    onChange={handleTypeChange}
-                    className="date-selector-select"
-                  >
-                    <Option value="date">Date</Option>
-                    <Option value="month">Month</Option>
-                    <Option value="year">Year</Option>
-                  </Select>
-                )}
-              <Button type="primary"> Submit </Button>
+              <Select
+                value={typeSelect}
+                onChange={handleTypeChange}
+                className="date-selector-select"
+                style={{ marginRight: 5, display: hasType ? 'inline-block' : 'none' }}
+              >
+                <Option value="date">Date</Option>
+                <Option value="month">Month</Option>
+                <Option value="year">Year</Option>
+              </Select>
+              <Button
+                className="date-selector-submit"
+                type="primary"
+                onClick={handleSubmit}
+                style={{ marginRight: 5 }}
+              >
+                Choose
+              </Button>
+              <CloseCircleFilled
+                className="date-selector-cancel"
+                onClick={handleCancel}
+              />
             </>
           )}
         />

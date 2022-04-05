@@ -58,9 +58,8 @@ function RoadmapContainer({
   //       return 'All';
   //   }
   // };
-
   return (
-    <div className="roadmap-container_colection">
+    <div className="roadmap-container_collection">
       {/* <div className="buttons">
         { types.map(
             (type) => (
@@ -94,12 +93,15 @@ function RoadmapContainer({
         justify="start"
       >
         {isAddable && (
-          <Col span={6}>
+          <Col
+            key={-1}
+            span={6}
+          >
             <RoadmapCard
               key={-1}
               roadmap={{
                 id: '-1',
-                status: 'edit',
+                status: 'add',
                 name: '',
                 description: 'Empty',
                 image: '',
@@ -115,7 +117,11 @@ function RoadmapContainer({
         {
           data.map(
             (roadmap) => (
-              <Col span={6} style={{ maxWidth: '25%' }}>
+              <Col
+                key={roadmap.id}
+                span={6}
+                style={{ maxWidth: '25%' }}
+              >
                 <RoadmapCard
                   key={roadmap.id}
                   roadmap={roadmap}

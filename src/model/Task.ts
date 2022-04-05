@@ -4,7 +4,7 @@ export default interface Task {
   note: string,
   startDate: string,
   endDate: string,
-  completed: number,
+  completed: boolean,
   userID: number
   milestoneID: number,
   roadmapID: number,

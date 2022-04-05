@@ -7,10 +7,7 @@ import {
   DeleteOutlined, EnterOutlined, CloseOutlined, HeartOutlined,
   HeartFilled,
 } from '@ant-design/icons';
-import UrlServices from '../../../services/UrlServices';
-
-import 'antd/dist/antd.css';
-import '../../../styles/RoadmapCard.scss';
+import UrlServices from '../../services/UrlServices';
 
 const { Meta } = Card;
 const { TextArea } = Input;
@@ -206,53 +203,61 @@ function RoadmapCard({
     setName(roadmap.name);
     setDescription(roadmap.description);
     setStatus(roadmap.status);
-    setImageSrc(UrlServices.getImageUrl(roadmap.image));
+    setImageSrc(roadmap.image ? UrlServices.getImageUrl(roadmap.image) : '');
     setShortDescription(shortenDescription(roadmap.description));
   }, [roadmap]);
 
+  useEffect(() => {
+    setImageSrc(roadmap.image ? UrlServices.getImageUrl(roadmap.image) : '');
+  }, [status, roadmap.image]);
+
   return (
-    <Card
-      loading={status === 'fetching'}
-      key={roadmap.id}
-      cover={uploadCover(roadmap.id, status, imageSrc, handleChange)}
-      className="roadmap-card"
-      extra={(
-        <div className="roadmap-card-extra">
-          <div className="roadmap-card-extra-item">
-            <Badge count={roadmap.likes_count} size="small">
-              {roadmap.liked
-                ? <HeartFilled className="icon HeartFilled" />
-                : <HeartOutlined className="icon Heart" />}
-            </Badge>
+    <div className="roadmap-card">
+      <Card
+        loading={status === 'fetching'}
+        key={roadmap.id}
+        cover={uploadCover(roadmap.id, status, imageSrc, handleChange)}
+        className="roadmap-card-content"
+        extra={(
+          <div className="roadmap-card-extra">
+            <div className="roadmap-card-extra-item">
+              <Badge count={roadmap.likes_count} size="small">
+                {roadmap.liked
+                  ? <HeartFilled className="icon HeartFilled" />
+                  : <HeartOutlined className="icon Heart" />}
+              </Badge>
+            </div>
           </div>
-        </div>
-      )}
-      style={{ width: 300 }}
-      actions={getActions(status)}
-    >
-      <Meta
-        title={status === 'editing' || status === 'add'
-          ? (
-            <Input
-              className="roadmap-card-title"
-              bordered={false}
-              value={name}
-              placeholder="Create a new roadmap"
-              onChange={(e) => setName(e.target.value)}
-              onPressEnter={handleSubmit}
-              key="input"
-            />
-          ) : name}
-        description={status === 'editing' || status === 'add'
-          ? (
-            <TextArea
-              autoSize={{ minRows: 1, maxRows: 4 }}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-          ) : shortDescription}
-      />
-    </Card>
+        )}
+        style={{ width: 300 }}
+        actions={getActions(status)}
+      >
+        <Meta
+          title={status === 'editing' || status === 'add'
+            ? (
+              <Input
+                className="roadmap-card-title"
+                bordered={false}
+                value={name}
+                placeholder="Create a new roadmap"
+                onChange={(e) => setName(e.target.value)}
+                onPressEnter={handleSubmit}
+                key="input"
+              />
+            ) : <div className="roadmap-card-title">{name}</div>}
+          description={status === 'editing' || status === 'add'
+            ? (
+              <TextArea
+                autoSize={{ minRows: 1, maxRows: 1 }}
+                className="roadmap-card-description"
+                value={description}
+                bordered={false}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            ) : <div className="roadmap-card-description">{shortDescription}</div>}
+        />
+      </Card>
+    </div>
   );
 }
 
