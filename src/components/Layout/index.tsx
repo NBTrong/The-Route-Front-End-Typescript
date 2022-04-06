@@ -19,6 +19,7 @@ import AuthApi from '../../services/AuthApi';
 
 // Model
 import User from '../../model/User';
+import Loading from '../Loading';
 
 interface TypeProps{
   children: ReactChild;
@@ -167,6 +168,7 @@ export default function Layout({ children, signOut }: TypeProps) {
         getUser={getUser}
         updateUser={updateUser}
       />
+      <Loading />
       {children}
     </>
   );

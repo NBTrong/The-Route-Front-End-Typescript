@@ -1,7 +1,6 @@
 import React, {
   useEffect, useState, useRef, useCallback,
 } from 'react';
-// import { Loading } from '../../components/Loading';
 import { message } from 'antd';
 import img_a from './img/log.svg';
 import img_b from './img/register.svg';
@@ -193,7 +192,6 @@ function Auth({ signUp, signIn }:TypeProps) {
             </div>
           </div>
         </div>
-        {/* <Loading /> */}
       </div>
     </div>
   );

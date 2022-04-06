@@ -1,5 +1,5 @@
 // Hook
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   BrowserRouter,
   Routes,
@@ -23,7 +23,7 @@ import AuthApi from './services/AuthApi';
 import './styles/index.scss';
 
 function App() {
-  const [token, setToken] = useState<string | null>('');
+  const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
   const error = (mess: string) => {
     setTimeout(() => {
       message.error(mess);
@@ -75,10 +75,6 @@ function App() {
       // TODO
     }
   };
-
-  useEffect(() => {
-    setToken(localStorage.getItem('token'));
-  }, [token]);
 
   if (!token) {
     return (

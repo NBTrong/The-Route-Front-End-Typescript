@@ -40,53 +40,8 @@ function RoadmapContainer({
   onOpen,
   isAddable,
 } : RoadmapContainerProps) {
-  // const getTypeName = (type) => {
-  //   switch (type) {
-  //     case 'all':
-  //       return 'All';
-  //     case 'mine':
-  //       return 'My Roadmaps';
-  //     case 'public':
-  //       return 'Public';
-  //     case 'private':
-  //       return 'Private';
-  //     case 'liked':
-  //       return 'Liked';
-  //     case 'watching':
-  //       return 'Watching';
-  //     default:
-  //       return 'All';
-  //   }
-  // };
   return (
     <div className="roadmap-container_collection">
-      {/* <div className="buttons">
-        { types.map(
-            (type) => (
-              <button
-                className={type === state.type && 'active'}
-                onClick={handleTypeChange}
-              >
-                { getTypeName(type) }
-              </button>
-            )
-          )
-        }
-      </div> */}
-      {/* <div className="header">
-        <p>
-          Showing
-          {' '}
-          <b>All</b>
-          {' '}
-          roadmaps for
-          {' '}
-          <b>{getTypeName(type)}</b>
-        </p>
-        <select>
-          <option>All Roadmaps</option>
-        </select>
-      </div> */}
       <Row
         className="roadmap-cards"
         gutter={[16, 16]}

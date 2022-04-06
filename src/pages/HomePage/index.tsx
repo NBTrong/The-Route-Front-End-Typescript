@@ -3,38 +3,12 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Pagination } from 'swiper';
 import HighlightSlide from '../../components/HighlightSlide';
 import Menu from '../../components/Menu';
-import Review from '../../components/Review';
 import Box from '../../components/Box';
 import 'swiper/swiper.min.css';
 import 'swiper/components/pagination/pagination.min.css';
 import HomePageApi from '../../services/HomePageApi';
 
 SwiperCore.use([Pagination]);
-const pp = [
-  {
-    name: 'Thầy Phương',
-    description: 'Web quá hay, 10 điểm về chỗ',
-    img: './images/troll-1.jpg',
-  },
-
-  {
-    name: 'Đỗ Nam Trung',
-    description: 'Tôi đang note nội dung họp NATO bằng web này',
-    img: './images/troll-3.jfif',
-  },
-
-  {
-    name: 'Ronaldo',
-    description: 'Rất mong admin làm chức năng kiếm thêm 2 quả bóng vàng',
-    img: './images/troll-5.jfif',
-  },
-
-  {
-    name: 'Fo Lo Ti Nô',
-    description: 'Quá ghê gớm, và đây là Fo lo ti nô',
-    img: './images/troll-4.jfif',
-  },
-];
 
 function HomePage() {
   // const [reviews, setReviews] = useState([] as any);
@@ -47,13 +21,11 @@ function HomePage() {
       const highlightRes = await HomePageApi.getHomePage('highlight');
       const menuRes = await HomePageApi.getHomePage('menu');
       const myCourseRes = await HomePageApi.getHomePage('myMenu');
-      // const review = await HomePageApi.getHomePage('review');
       setHighlights(highlightRes.data.data);
       setMenu(menuRes.data.data);
       setMyCourse(myCourseRes.data.data);
-      // setReviews(review);
     } catch (error) {
-      // console.log(error);
+      // TODO: handle error
     }
   };
 
@@ -102,7 +74,6 @@ function HomePage() {
         heading="studying"
         textButton="View"
       />
-      <Review key="3" data={pp} />
     </div>
   );
 }
