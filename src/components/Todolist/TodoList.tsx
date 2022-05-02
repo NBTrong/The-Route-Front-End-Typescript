@@ -10,8 +10,12 @@ import React, {
 /* Component */
 import { DownOutlined, PlusOutlined } from '@ant-design/icons';
 import {
-  List, Menu, Dropdown, Modal, Input,
+  List, Menu, Dropdown, Modal,
 } from 'antd';
+
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
 import DateSelector from '../DateSelector';
 import checkdone from './icon/checked.svg';
 import checkNoteDone from './icon/check-mark.svg';
@@ -21,7 +25,7 @@ import RoadmapContext from '../../store/RoadmapContext';
 import Task from '../../model/Task';
 import Milestone from '../../model/Milestone';
 
-const { TextArea } = Input;
+// const { Paragraph } = Typography;
 
 function TodoItem({ task, showModal }: { task: Task, showModal: Function }) {
   const { roadmap: { isRoadmapOwner }, dispatchRoadmap } = useContext(RoadmapContext);
@@ -218,10 +222,10 @@ function TodoList({ currentMilestone }: { currentMilestone: Milestone }) {
     });
   };
 
-  const handleOnChangeNote = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleOnChangeNote = (value: string) => {
     setCurrentTask({
       ...currentTask,
-      note: e.target.value,
+      note: value,
     });
   };
   const list = currentMilestone.tasks?.map((task) => (
@@ -231,6 +235,10 @@ function TodoList({ currentMilestone }: { currentMilestone: Milestone }) {
       showModal={showModal}
     />
   ));
+
+  const readOnlyModules = {
+    toolbar: false,
+  };
 
   return (
     <>
@@ -263,13 +271,24 @@ function TodoList({ currentMilestone }: { currentMilestone: Milestone }) {
           type="date"
           isEditable={isRoadmapOwner}
         />
-        <TextArea
-          rows={10}
-          className="textArea"
-          value={currentTask.note}
-          onChange={handleOnChangeNote}
-          disabled={!isRoadmapOwner}
-        />
+        {isRoadmapOwner && (
+          <ReactQuill
+          // rows={10}
+            className="textArea"
+            theme="snow"
+            value={currentTask.note}
+            onChange={handleOnChangeNote}
+          />
+        )}
+        {!isRoadmapOwner && (
+          <ReactQuill
+            className="textArea"
+            theme="snow"
+            value={currentTask.note}
+            modules={readOnlyModules}
+            readOnly
+          />
+        )}
       </Modal>
     </>
   );
